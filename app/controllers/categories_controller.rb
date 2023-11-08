@@ -1,5 +1,6 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!, except: [:index, :show]
 
   # GET /categories or /categories.json
   def index
@@ -21,7 +22,7 @@ class CategoriesController < ApplicationController
 
   # POST /categories or /categories.json
   def create
-    @category = Category.new(category_params)
+    @category = Category.new(category_params.merge(user_id: current_user.id))
 
     respond_to do |format|
       if @category.save
@@ -39,7 +40,8 @@ class CategoriesController < ApplicationController
     respond_to do |format|
       if @category.update(category_params)
         format.html { redirect_to category_url(@category), notice: "Category was successfully updated." }
-        format.json { render :show, status: :ok, location: @category }
+        # format.json { render :show, status: :ok, location: @category }
+        format.json { render json: { status: 'ok', name: @category.name } }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @category.errors, status: :unprocessable_entity }

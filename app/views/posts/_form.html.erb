@@ -18,17 +18,12 @@
 
   <div>
     <%= form.label :category_id, style: "display: block" %>
-    <%= form.text_field :category_id %>
+    <%= form.select :category_id, Category.all.map { |category| [category.name, category.id] } %>
   </div>
 
   <div>
     <%= form.label :body, style: "display: block" %>
     <%= form.text_area :body %>
-  </div>
-
-  <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
   </div>
 
   <div>
